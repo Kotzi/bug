@@ -1,12 +1,17 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour 
 {
+    private GameController gameController;
     private GameObject plant;
 
     private float plantTimer = 0f;
     private bool canPickUpPlant = true;
+
+    void Start()
+    {
+        gameController = Object.FindObjectOfType<GameController>();
+    }
 
     void Update()
     {
@@ -46,7 +51,23 @@ public class PlayerController : MonoBehaviour
         }
         else if (col.collider.name.Contains("Ant"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            gameController.restartGame();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.name == "Zone2PlayerDetector")
+        {
+            gameController.onZone2Detected();
+        } 
+        else if (other.name == "Zone3PlayerDetector")
+        {
+            gameController.onZone3Detected();
+        }
+        else if (other.name == "Zone4PlayerDetector")
+        {
+            gameController.onZone4Detected();
         }
     }
 
